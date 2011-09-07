@@ -1,0 +1,12 @@
+
+Bloom filter extension for SQLite
+=================================
+
+Installation
+------------
+
+  git clone ...
+  git submodule init && git submodule update
+
+
+
