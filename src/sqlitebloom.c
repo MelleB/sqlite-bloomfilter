@@ -1,6 +1,3 @@
-//
-// TODO: Insert LICENSE REF here
-//
 
 #include <string.h>
 #include <assert.h>
@@ -10,7 +7,6 @@
 
 #include "sqlite/sqlite3ext.h"
 #include "murmur3/murmur3.h"
-// #include "murmur3str.h"
 
 SQLITE_EXTENSION_INIT1
 
