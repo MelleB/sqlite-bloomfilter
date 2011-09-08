@@ -1,6 +1,6 @@
 
 -- Load the extension
-SELECT LOAD_EXTENSION('../libmurmur.so');
+SELECT 'Loaded "libbloom" extension...' FROM (SELECT LOAD_EXTENSION('../libbloom.so'));
 
 -- Create a db to test simple hashing
 DROP TABLE IF EXISTS hash_test;
@@ -16,12 +16,16 @@ INSERT INTO hash_test VALUES (6, 'sqlite','3267EB7FA3A580CC7F9AAA94CC9620EF');
 INSERT INTO hash_test VALUES (7, 'SQLite In 5 Minutes Or Less','2EB2C05C530C288D85FA0FBF9927CA36');
 INSERT INTO hash_test VALUES (8, 'Datatypes In SQLite Version 3','5E666262DF92184386EF84D7BE2F7373');
 
--- Running the actual tests
-SELECT 'Test failed: ' || id || '. ' || key || ' not equal to ' || hash 
-FROM hash_test WHERE murmur3(key) <> hash;
+-- Creation of the bloomfilter
+-- SELECT bloomfilter(key) FROM hash_test;
 
--- Summary of tests
+-- Check for errors
+SELECT 'Error: Key not in bloomfiter "' || key || '"' FROM hash_test
+WHERE in_bloom(key, (SELECT bloomfilter(key) FROM hash_test)) = 0;
+
+-- Error count
 SELECT 'Number of tests failed: ' || COUNT(*) FROM (
-SELECT 'Test failed: ' || id || '. ' || key || ' not equal to ' || hash 
-FROM hash_test WHERE murmur3(key) <> hash);
+  SELECT 'Error: Key not in bloomfiter "' || key || '"' FROM hash_test
+  WHERE in_bloom(key, (SELECT bloomfilter(key) FROM hash_test)) = 0
+);
 
