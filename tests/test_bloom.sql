@@ -19,7 +19,7 @@ INSERT INTO hash_test VALUES (8, 'Datatypes In SQLite Version 3','5E666262DF9218
 -- Creation of the bloomfilter
 -- SELECT bloomfilter(key) FROM hash_test;
 
--- Check for errors
+-- Check for errors bloomfilter with default size
 SELECT 'Error: Key not in bloomfiter "' || key || '"' FROM hash_test
 WHERE in_bloom(key, (SELECT bloomfilter(key) FROM hash_test)) = 0;
 
@@ -29,3 +29,13 @@ SELECT 'Number of tests failed: ' || COUNT(*) FROM (
   WHERE in_bloom(key, (SELECT bloomfilter(key) FROM hash_test)) = 0
 );
 
+
+-- Check for errors bloomfilter with custom size
+SELECT 'Error: Key not in bloomfiter "' || key || '"' FROM hash_test
+WHERE in_bloom(key, (SELECT bloomfilter(key, 1234) FROM hash_test)) = 0;
+
+-- Error count
+SELECT 'Number of tests failed: ' || COUNT(*) FROM (
+  SELECT 'Error: Key not in bloomfiter "' || key || '"' FROM hash_test
+  WHERE in_bloom(key, (SELECT bloomfilter(key, 1234) FROM hash_test)) = 0
+);

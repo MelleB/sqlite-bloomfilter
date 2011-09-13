@@ -33,13 +33,15 @@ First, the extension needs to be loaded using
 
 After that the following functions are provided:
 
-* __murmur3([string])__  
+* __murmur3(STRING)__  
   Calculates the murmur3 hash of a given string.
-* __bloomfilter([field])__  
+* __bloomfilter(STRING, [SIZE])__  
   Create a bloomfilter for a given field.  
   E.g. ```SELECT bloomfilter(name) FROM persons WHERE age < 100;```  
   This function returns a bloom filter as a long hexadecimal string.
-* __in_bloom([value], [bloomfilter])__    
+  The optional SIZE parameter specifies the number of bits of the bloomfilter.
+  By default the bloomfilter is 512 bits.
+* __in_bloom(STRING, BLOOMFILTER)__    
   Test whether the value is in the bloomfilter, returns 1 (true) or 
   0 (false).
 
@@ -51,8 +53,7 @@ come accross any, please let me know.
 
 Limitations:
 
-* Size of bloomfilter is determined at in the ```SQLITE_BLOOM_DEFAULT_SIZE```
-  definition.
+* Currently uses a single hash function
 
 
 License
